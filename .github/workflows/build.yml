@@ -1,0 +1,19 @@
+name: Build Goob Server ARM64
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+    - run: python3 RUN_THIS.py
+    - run: dotnet publish Content.Server -c Release -r linux-arm64 --no-self-contained
+    - uses: actions/upload-artifact@v4
+      with:
+        name: goob-server-arm64
+        path: '**/bin/Release/**/publish/'
